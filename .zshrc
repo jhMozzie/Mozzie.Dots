@@ -18,3 +18,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 alias projects="cd ~/Documents/Projects"
 alias zshconfig="vim ~/.zshrc"
 alias zshsource="source ~/.zshrc"
+
+# Starship
+eval "$(starship init zsh)"
