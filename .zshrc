@@ -23,7 +23,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # ===============================================================
 
 # Navigation
-alias projects="cd ~/Documents/Projects"
+alias Angular="cd ~/Documents/Projects/Angular"
 
 # Productivity & Config Management
 alias zshconfig="vim ~/.zshrc"    # Quick edit zsh config
@@ -53,6 +53,22 @@ alias savedots="cp ~/.zshrc ~/Mozzie.Dots/ && cp ~/.vimrc ~/Mozzie.Dots/ && cp ~
 # SHELL ENHANCEMENTS
 # ===============================================================
 
+# 1. Enable a visual menu you can navigate with arrow keys
+zstyle ':completion:*' menu select
+
+# 2. Group results by category (This enables the "Tags" view)
+zstyle ':completion:*' group-name ''
+
+# 3. Format for the category headers (The green text in your images)
+zstyle ':completion:*:*:*:*:descriptions' format '%F{green}-- %d --%f'
+
+# 4. Format for Messages and Warnings
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+
+# 5. Sync colors with your terminal theme
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
 # Carapace: Multi-shell command argument completer
 source <(carapace _zsh)
 
@@ -62,3 +78,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Starship Prompt: The cross-shell customizable prompt
 # THIS MUST BE THE LAST LINE OF THE FILE
 eval "$(starship init zsh)"
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
