@@ -95,6 +95,39 @@ nvimconfig(){
   nvim
 }
 
+savedots() {
+    echo "Starting backup to Mozzie.Dots..."
+
+    # 1. Limpieza preventiva
+    rm -rf ~/Mozzie.Dots/nvim
+    rm -rf ~/Mozzie.Dots/zellij
+
+    # 2. Creación de directorios
+    mkdir -p ~/Mozzie.Dots/nvim
+    mkdir -p ~/Mozzie.Dots/zellij
+
+    # 3. Copia de Neovim (Asegurando que no se traten como sub-repos)
+    # Copiamos todo, pero luego borramos cualquier carpeta .git interna 
+    # para que GitHub no bloquee la subida de la carpeta nvim.
+    cp -R ~/.config/nvim/. ~/Mozzie.Dots/nvim/
+    find ~/Mozzie.Dots/nvim -name ".git" -exec rm -rf {} + 2>/dev/null
+
+    # 4. Copia de Zellij
+    cp -R ~/.config/zellij/. ~/Mozzie.Dots/zellij/
+
+    # 5. Copia de archivos base
+    cp ~/.zshrc ~/Mozzie.Dots/.zshrc
+    cp ~/.config/starship.toml ~/Mozzie.Dots/starship.toml
+
+    # 6. Proceso de Git
+    cd ~/Mozzie.Dots
+    git add .
+    git commit -m "Update: Full backup of Nvim and Zellij configs"
+    git push origin main
+    
+    echo "Backup complete!"
+}
+
 # ===============================================================
 # ZELLIJ
 # ===============================================================
