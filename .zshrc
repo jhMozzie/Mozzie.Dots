@@ -1,84 +1,89 @@
 # ===============================================================
-# VERSION MANAGER CONFIGURATIONS
+# TERMINAL COLOR SUPPORT
 # ===============================================================
-
-# SDKMAN: Required for managing Java versions (v17, v21, etc.)
-# This must remain at the end of the script to initialize correctly.
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# NVM: Node Version Manager
-# Essential for switching between Node/Angular versions (v18, v20, etc.)
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Loads nvm bash_completion
-
-# BUN: Fast JavaScript all-in-one toolkit
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "/Users/jhmozzie/.bun/_bun" ] && source "/Users/jhmozzie/.bun/_bun" # Bun completions
+export TERM=xterm-256color
 
 # ===============================================================
-# PERSONAL ALIASES
+# ZSH COMPLETION INIT — debe ser lo primero
 # ===============================================================
-
-# Navigation
-alias Angular="cd ~/Documents/Projects/Angular"
-
-# Productivity & Config Management
-alias zshconfig="vim ~/.zshrc"    # Quick edit zsh config
-alias zshsource="source ~/.zshrc" # Apply changes immediately
-
-# ===============================================================
-# GITHUB CLI (GH) ALIASES
-# ===============================================================
-
-# Create a PRIVATE repo based on current folder name and push
-alias gh-p-new="gh repo create --private --source=. --remote=origin --push"
-
-# Create a PUBLIC repo based on current folder name and push
-alias gh-new="gh repo create --public --source=. --remote=origin --push"
-
-# Open the current repository in the web browser
-alias gh-web="gh repo view --web"
-
-# ===============================================================
-# DOTFILES BACKUP SYSTEM (Mozzie.Dots)
-# ===============================================================
-
-# Sync all important configs to backup folder and push to GitHub
-alias savedots="cp ~/.zshrc ~/Mozzie.Dots/ && cp ~/.vimrc ~/Mozzie.Dots/ && cp ~/.config/starship.toml ~/Mozzie.Dots/ && cd ~/Mozzie.Dots && git add . && git commit -m 'Update dotfiles' && git push"
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
 
 # ===============================================================
 # SHELL ENHANCEMENTS
 # ===============================================================
-
-# 1. Enable a visual menu you can navigate with arrow keys
 zstyle ':completion:*' menu select
-
-# 2. Group results by category (This enables the "Tags" view)
 zstyle ':completion:*' group-name ''
-
-# 3. Format for the category headers (The green text in your images)
 zstyle ':completion:*:*:*:*:descriptions' format '%F{green}-- %d --%f'
-
-# 4. Format for Messages and Warnings
 zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
 zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-
-# 5. Sync colors with your terminal theme
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# Carapace: Multi-shell command argument completer
+# Carapace — después de bashcompinit
 source <(carapace _zsh)
 
-# Zsh Autosuggestions: Fish-like fast forward suggestions
+# Zsh Autosuggestions
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Starship Prompt: The cross-shell customizable prompt
-# THIS MUST BE THE LAST LINE OF THE FILE
-eval "$(starship init zsh)"
+# ===============================================================
+# VERSION MANAGERS
+# ===============================================================
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# Load Angular CLI autocompletion.
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "/Users/jhmozzie/.bun/_bun" ] && source "/Users/jhmozzie/.bun/_bun"
+
 source <(ng completion script)
+
+# ===============================================================
+# PERSONAL ALIASES
+# ===============================================================
+alias Angular="cd ~/Documents/Projects/Angular"
+alias nvimfile="cd ~/.config/nvim"
+alias zshconfig="nvim ~/.zshrc"
+alias zshsource="source ~/.zshrc"
+alias code="/usr/local/bin/code"
+alias surf="open -a 'Windsurf'"
+
+# ===============================================================
+# GITHUB CLI ALIASES
+# ===============================================================
+alias gh-p-new="gh repo create --private --source=. --remote=origin --push"
+alias gh-new="gh repo create --public --source=. --remote=origin --push"
+alias gh-web="gh repo view --web"
+
+# ===============================================================
+# DOTFILES BACKUP
+# ===============================================================
+alias savedots="cp ~/.zshrc ~/Mozzie.Dots/ && cp ~/.vimrc ~/Mozzie.Dots/ && cp ~/.config/starship.toml ~/Mozzie.Dots/ && cd ~/Mozzie.Dots && git add . && git commit -m 'Update dotfiles' && git push"
+
+# ===============================================================
+# FUNCTIONS
+# ===============================================================
+nvimconfig(){
+  cd ~/.config/nvim || return
+  nvim
+}
+
+# ===============================================================
+# ZELLIJ
+# ===============================================================
+alias zj="zellij"
+alias zja="zellij attach"
+alias zjls="zellij list-sessions"
+alias zellijconfig="nvim ~/.config/zellij/config.kdl"
+
+if [ -z "$ZELLIJ" ]; then
+  zellij
+fi
+
+# ===============================================================
+# PROMPT — ÚLTIMA LÍNEA SIEMPRE
+# ===============================================================
+eval "$(starship init zsh)"
