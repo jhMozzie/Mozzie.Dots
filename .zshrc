@@ -63,8 +63,6 @@ alias gh-web="gh repo view --web"
 # DOTFILES BACKUP
 # ===============================================================
 savedots() {
-    echo "Starting backup to Mozzie.Dots..."
-
     # 1. Limpieza preventiva
     rm -rf ~/Mozzie.Dots/nvim
     rm -rf ~/Mozzie.Dots/zellij
