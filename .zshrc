@@ -61,7 +61,30 @@ alias gh-web="gh repo view --web"
 # ===============================================================
 # DOTFILES BACKUP
 # ===============================================================
-alias savedots="cp ~/.zshrc ~/Mozzie.Dots/ && cp ~/.vimrc ~/Mozzie.Dots/ && cp ~/.config/starship.toml ~/Mozzie.Dots/ && cd ~/Mozzie.Dots && git add . && git commit -m 'Update dotfiles' && git push"
+alias savedots="
+  # 1. Limpieza preventiva en el backup
+  rm -rf ~/Mozzie.Dots/nvim ~/Mozzie.Dots/zellij;
+  
+  # 2. Creación de directorios de destino
+  mkdir -p ~/Mozzie.Dots/nvim ~/Mozzie.Dots/zellij;
+  
+  # 3. Copia de Neovim (Ruta: /Users/jhmozzie/.config/nvim)
+  # Usamos /. para copiar el contenido y no crear una carpeta noda
+  cp -R ~/.config/nvim/. ~/Mozzie.Dots/nvim/;
+  
+  # 4. Copia de Zellij (Ruta: ~/.config/zellij)
+  cp -R ~/.config/zellij/. ~/Mozzie.Dots/zellij/;
+  
+  # 5. Copia de archivos base
+  cp ~/.zshrc ~/Mozzie.Dots/.zshrc;
+  cp ~/.config/starship.toml ~/Mozzie.Dots/starship.toml;
+  
+  # 6. Proceso de Git
+  cd ~/Mozzie.Dots && \
+  git add . && \
+  git commit -m 'Update: Full backup of Nvim and Zellij configs' && \
+  git push origin main
+"
 
 # ===============================================================
 # FUNCTIONS
